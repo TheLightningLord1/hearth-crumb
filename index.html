@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hearth & Crumb — крафтовая пекарня на закваске | Москва</title>
+
+    <!-- Шрифты: Playfair Display (заголовки) + Lato (текст) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+<base target="_blank">
+</head>
+<body>
+
+    <!-- Header -->
+    <header id="main-header">
+        <div class="container nav-wrapper">
+            <a href="#" class="logo">
+                🌾 Hearth <span>&</span> Crumb
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#about">О нас</a></li>
+                    <li><a href="#menu">Меню</a></li>
+                    <li><a href="#reviews">Отзывы</a></li>
+                    <li><a href="#order">Где найти</a></li>
+                </ul>
+            </nav>
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <div class="cart-trigger" onclick="toggleCart()">
+                    Корзина <span id="cart-count" class="cart-count">0</span>
+                </div>
+                <div class="mobile-toggle">☰</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>Настоящий хлеб<br>на дикой закваске</h1>
+            <p>Забронируйте с вечера — утром тёплый тартин и спешелти-кофе будут ждать вас. −15% на первый предзаказ</p>
+            <a href="#order" class="btn">Забронировать свежее к утру</a>
+        </div>
+    </section>
+
+    <!-- Story / Process -->
+    <section id="about" class="fade-in">
+        <div class="container">
+            <div class="story-grid">
+                <div class="story-img">
+                    <img src="https://images.unsplash.com/photo-1556910103-1c02745a30bf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Процесс выпечки">
+                </div>
+                <div class="story-text">
+                    <h3>Из чего и как мы печем</h3>
+                    <p>Мы не используем промышленные дрожжи. Наш секрет — живая закваска, которой уже 5 лет, и мука от локальных фермеров. Каждую ночь мы замешиваем тесто, чтобы утром вы получили самый свежий хлеб.</p>
+                    <p style="margin-top: 15px;">Наша кухня открыта: приходите и смотрите, как рождается ваш завтрак.</p>
+
+                    <div class="ingredients-list">
+                        <span class="ing-tag">🌾 Органическая мука</span>
+                        <span class="ing-tag">💧 Фильтрованная вода</span>
+                        <span class="ing-tag">🧂 Морская соль</span>
+                        <span class="ing-tag">⏳ 24 часа ферментации</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu / Catalog -->
+    <section id="menu" class="fade-in">
+        <div class="container">
+            <h2 class="section-title">Витрина дня</h2>
+            <p class="section-subtitle">Только свежее, только сегодня</p>
+
+            <div class="showcase-banner">
+                🕗 Витрина обновляется в 8:00 — к обеду разбирают почти всё. Бронируйте с вечера
+            </div>
+
+            <div class="menu-filters">
+                <button class="filter-btn active" onclick="filterMenu('all', this)">Все</button>
+                <button class="filter-btn" onclick="filterMenu('bread', this)">Хлеб</button>
+                <button class="filter-btn" onclick="filterMenu('pastry', this)">Выпечка</button>
+                <button class="filter-btn" onclick="filterMenu('coffee', this)">Кофе</button>
+            </div>
+
+            <div class="products-grid" id="products-container">
+                <!-- JS renders cards -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews -->
+    <section id="reviews" class="reviews-section fade-in">
+        <div class="container">
+            <h2 class="section-title">Что говорят гости</h2>
+            <p class="section-subtitle">Истории наших постоянных гостей</p>
+
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <p class="review-text">Тартин — лучший в городе. Прихожу каждую субботу к 9:00, а по предзаказу забираю без очереди</p>
+                    <div class="review-author">— Марина</div>
+                </div>
+                <div class="review-card">
+                    <p class="review-text">Брал кофе и круассаны к приезду гостей. Всё тёплое и свежее, собрали за 5 минут</p>
+                    <div class="review-author">— Игорь</div>
+                </div>
+                <div class="review-card">
+                    <p class="review-text">Заказывала галету на день рождения — гости до сих пор спрашивают, где такая пекарня</p>
+                    <div class="review-author">— Аня</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order & Map -->
+    <section id="order" class="fade-in">
+        <div class="container">
+            <div class="order-section">
+                <div class="order-layout">
+                    <div class="order-form">
+                        <h3>Забронируйте сейчас — заберёте без очереди</h3>
+                        <p style="margin-bottom: 24px; font-size: 0.95rem; color: #666;">
+                            Забронируйте товары сейчас, заберите без очереди в назначенное время.
+                        </p>
+
+                        <form id="checkout-form" onsubmit="handleCheckout(event)">
+                            <div class="form-group">
+                                <label>Ваше имя</label>
+                                <input type="text" class="form-control" id="order-name" required placeholder="Иван">
+                            </div>
+                            <div class="form-group">
+                                <label>Телефон</label>
+                                <input type="tel" class="form-control" id="order-phone" required placeholder="+7 (999) 000-00-00">
+                            </div>
+                            <div class="form-group">
+                                <label>Дата и время получения</label>
+                                <input type="datetime-local" class="form-control" required id="pickup-time">
+                            </div>
+                            <div class="form-group">
+                                <label>Способ получения</label>
+                                <select class="form-control" id="order-method">
+                                    <option value="Самовывоз (ул. Пекарная, 12)">Самовывоз (ул. Пекарная, 12)</option>
+                                    <option value="Доставка (в пределах зоны)">Доставка (в пределах зоны)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Состав заказа</label>
+                                <textarea class="form-control" id="order-items" rows="4" readonly placeholder="Товары появятся здесь после нажатия «Перейти к оформлению» в корзине"></textarea>
+                            </div>
+
+                            <div class="delivery-zones">
+                                🚚 Зоны доставки: Центр, Старый Город, Парковый район.<br>
+                                ⏱ Среднее время подготовки заказа: 30 мин.
+                            </div>
+
+                            <button type="submit" class="btn" style="width: 100%; margin-top: 24px;">
+                                Оформить предзаказ
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2245.56789!2d37.6173!3d55.7558!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTXCsDQ1JzIwLjkiTiAzN8KwMzcnMDIuMyJF!5e0!3m2!1sen!2sru!4v1600000000000!5m2!1sen!2sru" allowfullscreen="" loading="lazy"></iframe>
+                        <div class="map-badge">
+                            <strong>Hearth & Crumb</strong><br>
+                            Ежедневно: 08:00 – 21:00<br>
+                            📞 +7 (999) 123-45-67
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h4>Hearth & Crumb</h4>
+                    <p>Крафтовая пекарня с душой.<br>Печем с любовью с 2018 года.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Контакты</h4>
+                    <p>ул. Пекарная, 12, Москва</p>
+                    <p>+7 (999) 123-45-67</p>
+                    <p>hello@hearthcrumb.ru</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Соцсети</h4>
+                    <a href="#" onclick="return false;">Telegram</a> <!-- TODO: добавить ссылку -->
+                    <a href="#" onclick="return false;">VKontakte</a> <!-- TODO: добавить ссылку -->
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2026 Hearth & Crumb Bakery. Все права защищены.
+            </div>
+            <div class="dev-credit">
+                💻 Разработка сайта — Кирилл | <a href="https://t.me/НИК" target="_blank" rel="noopener">Написать в Telegram: @НИК</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Modal -->
+    <div class="modal-overlay" id="cart-modal">
+        <div class="cart-modal">
+            <div class="cart-header">
+                <h3>Ваш заказ</h3>
+                <button class="close-cart" onclick="toggleCart()">✕</button>
+            </div>
+            <div class="cart-items" id="cart-items-container">
+                <p style="text-align: center; color: #999; margin-top: 50px;">Корзина пуста</p>
+            </div>
+            <div class="cart-footer">
+                <div class="total-row">
+                    <span>Итого:</span>
+                    <span id="cart-total">0 ₽</span>
+                </div>
+                <button class="checkout-btn" onclick="scrollToOrder()">Перейти к оформлению</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">Товар добавлен в корзину</div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
