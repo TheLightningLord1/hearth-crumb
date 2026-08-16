@@ -106,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- РЕНДЕР МЕНЮ ---
 function renderProducts(items) {
     const container = document.getElementById('products-container');
+    if (!container) return;
     container.innerHTML = '';
 
     items.forEach(product => {
@@ -137,7 +138,7 @@ function renderProducts(items) {
 // --- ФИЛЬТРАЦИЯ ---
 function filterMenu(category, btn) {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    if (btn) btn.classList.add('active');
 
     if (category === 'all') {
         renderProducts(products);
@@ -150,6 +151,8 @@ function filterMenu(category, btn) {
 // --- ЛОГИКА КОРЗИНЫ ---
 function addToCart(id) {
     const product = products.find(p => p.id === id);
+    if (!product) return;
+    
     const existing = cart.find(item => item.id === id);
 
     if (existing) {
@@ -180,6 +183,8 @@ function updateCartUI() {
     const countEl = document.getElementById('cart-count');
     const itemsContainer = document.getElementById('cart-items-container');
     const totalEl = document.getElementById('cart-total');
+
+    if (!countEl || !itemsContainer || !totalEl) return;
 
     const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
     countEl.textContent = totalCount;
@@ -216,6 +221,7 @@ function updateCartUI() {
 
 function toggleCart() {
     const modal = document.getElementById('cart-modal');
+    if (!modal) return;
     modal.classList.toggle('open');
     document.body.style.overflow = modal.classList.contains('open') ? 'hidden' : '';
 }
@@ -224,14 +230,15 @@ function toggleCart() {
 function scrollToOrder() {
     toggleCart();
     const orderSection = document.getElementById('order');
+    if (!orderSection) return;
     orderSection.scrollIntoView({ behavior: 'smooth' });
 
     const orderItems = document.getElementById('order-items');
-    if (cart.length > 0) {
+    if (cart.length > 0 && orderItems) {
         const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
         const text = cart.map(i => `• ${i.title} — ${i.qty} шт. × ${i.price} ₽`).join('\n');
         orderItems.value = text + `\n\nИтого: ${total.toLocaleString('ru-RU')} ₽`;
-    } else {
+    } else if (orderItems) {
         orderItems.value = '';
     }
 }
@@ -239,6 +246,7 @@ function scrollToOrder() {
 // --- УВЕДОМЛЕНИЯ ---
 function showToast(message) {
     const toast = document.getElementById('toast');
+    if (!toast) return;
     toast.textContent = message;
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 2800);
@@ -247,9 +255,19 @@ function showToast(message) {
 // --- ДАТАПИКЕР ---
 function setupDatepicker() {
     const input = document.getElementById('pickup-time');
+    if (!input) return;
     const now = new Date();
-    now.setMinutes(now.getMinutes() - now.getTimezoneOffset() + 30);
-    input.min = now.toISOString().slice(0, 16);
+    // Устанавливаем минимальную дату - текущее время с округлением до ближайших 30 минут
+    const minutes = now.getMinutes();
+    const roundedMinutes = Math.ceil(minutes / 30) * 30;
+    now.setMinutes(roundedMinutes);
+    if (roundedMinutes >= 60) {
+        now.setHours(now.getHours() + 1);
+        now.setMinutes(0);
+    }
+    // Форматируем для datetime-local (YYYY-MM-DDTHH:MM)
+    const localTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+    input.min = localTime.toISOString().slice(0, 16);
 }
 
 // --- ОФОРМЛЕНИЕ ЗАКАЗА ---
@@ -260,11 +278,16 @@ function handleCheckout(e) {
         return;
     }
 
-    const name = document.getElementById('order-name').value.trim();
-    const phone = document.getElementById('order-phone').value.trim();
-    const time = document.getElementById('pickup-time').value;
-    const method = document.getElementById('order-method').value;
-    const itemsText = document.getElementById('order-items').value;
+    const name = document.getElementById('order-name');
+    const phone = document.getElementById('order-phone');
+    const time = document.getElementById('pickup-time');
+    const method = document.getElementById('order-method');
+    const itemsText = document.getElementById('order-items');
+
+    if (!name || !phone || !time || !method || !itemsText) {
+        alert('Ошибка формы. Обновите страницу и попробуйте снова.');
+        return;
+    }
 
     const btn = e.target.querySelector('button[type="submit"]');
     const originalText = btn.textContent;
@@ -272,7 +295,7 @@ function handleCheckout(e) {
     btn.disabled = true;
 
     // Сборка сообщения
-    const message = `Предзаказ Hearth & Crumb\n\nИмя: ${name}\nТелефон: ${phone}\nВремя: ${time}\nСпособ: ${method}\n\nСостав:\n${itemsText}`;
+    const message = `Предзаказ Hearth & Crumb\n\nИмя: ${name.value.trim()}\nТелефон: ${phone.value.trim()}\nВремя: ${time.value}\nСпособ: ${method.value}\n\nСостав:\n${itemsText.value}`;
 
     // TODO: заменить на реальный Telegram-бот или WhatsApp Business API
     setTimeout(() => {
@@ -280,7 +303,7 @@ function handleCheckout(e) {
         // window.open(`https://t.me/share/url?text=${encodeURIComponent(message)}`, '_blank');
         cart = [];
         updateCartUI();
-        document.getElementById('order-items').value = '';
+        itemsText.value = '';
         e.target.reset();
         btn.textContent = originalText;
         btn.disabled = false;
@@ -290,6 +313,7 @@ function handleCheckout(e) {
 // --- HEADER SCROLL ---
 function setupScrollHeader() {
     const header = document.getElementById('main-header');
+    if (!header) return;
     window.addEventListener('scroll', () => {
         if (window.scrollY > 40) header.classList.add('scrolled');
         else header.classList.remove('scrolled');
